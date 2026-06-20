@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Dashboard Smiles</title>
+    <style>
+        .admin-topbar { 
+            background-color: #e74c3c; 
+            padding: 10px 20px; 
+            text-align: right; 
+            margin: -20px -20px 20px -20px; 
+        }
+        .admin-topbar a { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 14px; 
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra exclusiva de Admin -->
+    <div class="admin-topbar">
+        <a href="admin.html">⚙️ Acceso Administrador</a>
+    </div>
+
+    <!-- Menú general -->
+    <nav>
+        <a href="index.html">Pacientes</a> | 
+        <a href="dentistas.html">Dentistas</a> | 
+        <a href="citas.html">Citas</a>
+    </nav>
+    
+    <h1>Dashboard Administrativo</h1>
+    
+    <div style="display: flex; gap: 20px;">
+        <div style="border: 1px solid #ddd; padding: 20px; background: white;">Pacientes: <h2 id="p">0</h2></div>
+        <div style="border: 1px solid #ddd; padding: 20px; background: white;">Citas: <h2 id="c">0</h2></div>
+        <div style="border: 1px solid #ddd; padding: 20px; background: white;">Canceladas: <h2 id="can">0</h2></div>
+    </div>
+
+    <hr>
+    
+    <h2>Alta de Nuevos Dentistas (Solo Admin)</h2>
+    <form id="form-dentista" style="background: #fdfefe; border-left: 4px solid #e74c3c; padding: 15px;">
+        <input type="text" id="d_nombre" placeholder="Nombre del Dr." required>
+        <input type="text" id="d_especialidad" placeholder="Especialidad" required>
+        <input type="text" id="d_telefono" placeholder="Teléfono" required>
+        <input type="email" id="d_correo" placeholder="Correo" required>
+        <input type="text" id="d_horario" placeholder="Horario (ej. 9am - 5pm)" required>
+        <button type="button" onclick="guardarDentistaAdmin()" style="background-color: #e74c3c;">Registrar Dentista</button>
+    </form>
+
+    <script>
+        // --- 1. GUARDIA DE SEGURIDAD ---
+        // Esto se ejecuta inmediatamente al abrir la página
+        const usuario = prompt("Acceso Restringido. Ingrese su usuario:");
+        
+        if (!usuario) {
+            window.location.href = "index.html"; // Si cancela, lo regresa a pacientes
+        } else {
+            const contraseña = prompt("Ingrese su contraseña:");
+            
+            if (usuario !== "Maximiliano" || contraseña !== "12345") {
+                alert("Credenciales incorrectas. Acceso denegado.");
+                window.location.href = "index.html"; // Lo expulsa si se equivoca
+            }
+        }
+
+        // --- 2. CARGAR ESTADÍSTICAS ---
+        // Solo llega aquí si puso la contraseña correcta
+        fetch('http://localhost:3000/api/admin/stats')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('p').innerText = data.totalPacientes;
+                document.getElementById('c').innerText = data.totalCitas;
+                document.getElementById('can').innerText = data.totalCanceladas;
+            })
+            .catch(err => console.error("Error al cargar stats:", err));
+
+        // --- 3. GUARDAR DENTISTA ---
+        async function guardarDentistaAdmin() {
+            const nuevo = {
+                nombre: document.getElementById('d_nombre').value,
+                especialidad: document.getElementById('d_especialidad').value,
+                telefono: document.getElementById('d_telefono').value,
+                correo: document.getElementById('d_correo').value,
+                horario: document.getElementById('d_horario').value
+            };
+
+            const res = await fetch('http://localhost:3000/api/dentistas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nuevo)
+            });
+
+            if(res.ok) {
+                alert('Doctor registrado exitosamente');
+                document.getElementById('form-dentista').reset();
+            } else {
+                alert('Error al guardar el doctor');
+            }
+        }
+    </script>
+</body>
+</html>

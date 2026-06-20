@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><link rel="stylesheet" href="style.css"></head>
+<body>
+    <nav>
+    <a href="index.html">Pacientes</a> | 
+    <a href="dentistas.html">Dentistas</a> | 
+    <a href="citas.html">Citas</a> | 
+    <a href="admin.html">Dashboard Admin</a>
+</nav>
+    <h1>Clínica Smiles - Citas</h1>
+    <br>
+    <form id="formCita">
+        <input type="text" id="c_paciente" placeholder="Nombre del Paciente" required>
+        <input type="text" id="c_dentista" placeholder="Nombre del Dentista" required>
+        <input type="date" id="c_fecha" required>
+        <input type="time" id="c_hora" required>
+        <input type="text" id="c_motivo" placeholder="Motivo" required>
+        <select id="c_estado">
+            <option value="Programada">Programada</option>
+            <option value="Confirmada">Confirmada</option>
+            <option value="Cancelada">Cancelada</option>
+        </select>
+        <button type="submit">Agendar Cita</button>
+    </form>
+    <div style="margin-bottom: 15px; background: white; padding: 10px; border-radius: 5px;">
+        <strong>Ordenar Citas: </strong>
+        <button type="button" onclick="window.cargarCitas('fecha', 'asc')" style="background-color: #34495e; padding: 5px 10px; font-size: 12px;">Fecha (Próximas primero)</button>
+        <button type="button" onclick="window.cargarCitas('fecha', 'desc')" style="background-color: #34495e; padding: 5px 10px; font-size: 12px;">Fecha (Más lejanas)</button>
+        <button type="button" onclick="window.cargarCitas('paciente', 'asc')" style="background-color: #34495e; padding: 5px 10px; font-size: 12px;">Por Paciente (A-Z)</button>
+    </div>
+    <table border="1" style="margin-top:20px;">
+        <thead><tr><th>Paciente</th><th>Dentista</th><th>Fecha/Hora</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody id="tablaCitas"></tbody>
+    </table>
+    <script src="app.js"></script>
+</body>
+</html>

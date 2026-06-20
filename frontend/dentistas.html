@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Clínica Smiles - Dentistas</title>
+    <style>
+        .admin-topbar { 
+            background-color: #e74c3c; 
+            padding: 10px 20px; 
+            text-align: right; 
+            margin: -20px -20px 20px -20px; 
+        }
+        .admin-topbar a { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 14px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-topbar">
+        <a href="admin.html">⚙️ Acceso Administrador</a>
+    </div>
+
+    <nav>
+        <a href="index.html">Pacientes</a> | 
+        <a href="dentistas.html">Dentistas</a> | 
+        <a href="citas.html">Citas</a>
+    </nav>
+    
+    <h1>Directorio de Dentistas</h1>
+    <div style="margin-bottom: 15px; background: white; padding: 10px; border-radius: 5px;">
+        <strong>Ordenar Doctores: </strong>
+        <button type="button" onclick="window.cargarDentistas('nombre', 'asc')" style="background-color: #34495e; padding: 5px 10px; font-size: 12px;">Nombre (A-Z)</button>
+        <button type="button" onclick="window.cargarDentistas('especialidad', 'asc')" style="background-color: #34495e; padding: 5px 10px; font-size: 12px;">Por Especialidad</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Especialidad</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Horario</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-dentistas">
+            </tbody>
+    </table>
+
+    <script>
+        // Función para cargar los dentistas desde la base de datos
+        async function cargarDentistas() {
+            try {
+                const res = await fetch('http://localhost:3000/api/dentistas');
+                const dentistas = await res.json();
+                
+                const tbody = document.getElementById('tabla-dentistas');
+                tbody.innerHTML = ''; // Limpiar la tabla antes de llenarla
+
+                dentistas.forEach(d => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${d.nombre}</td>
+                            <td>${d.especialidad}</td>
+                            <td>${d.telefono}</td>
+                            <td>${d.correo}</td>
+                            <td>${d.horario}</td>
+                            <td>
+                                <button style="background-color: #e74c3c;" onclick="eliminarDentista('${d._id}')">Eliminar</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error al cargar dentistas:", error);
+            }
+        }
+
+        // Función para eliminar un dentista
+        async function eliminarDentista(id) {
+            if(confirm('¿Seguro que deseas eliminar a este doctor del sistema?')) {
+                try {
+                    await fetch(`http://localhost:3000/api/dentistas/${id}`, { method: 'DELETE' });
+                    cargarDentistas(); // Recargar la tabla
+                } catch (error) {
+                    alert('Error al eliminar');
+                }
+            }
+        }
+
+        // Ejecutar la carga en cuanto se abre la página
+        cargarDentistas();
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><link rel="stylesheet" href="style.css"></head>
+<body>
+    <nav>
+    <a href="index.html">Pacientes</a> | 
+    <a href="dentistas.html">Dentistas</a> | 
+    <a href="citas.html">Citas</a> | 
+    <a href="admin.html">Dashboard Admin</a>
+</nav>
+    <h1>Clínica Smiles - Pacientes</h1>
+
+    <br>
+    <form id="formPaciente">
+        <input type="text" id="p_nombre" placeholder="Nombre" required>
+        <input type="number" id="p_edad" placeholder="Edad" required>
+        <input type="text" id="p_telefono" placeholder="Teléfono" required>
+        <input type="email" id="p_correo" placeholder="Correo" required>
+        <input type="text" id="p_direccion" placeholder="Dirección" required>
+        <button type="submit">Guardar Paciente</button>
+    </form>
+    <div style="margin-bottom: 15px; background: white; padding: 10px; border-radius: 5px;">
+        <strong>Ordenar tabla por: </strong>
+        <button type="button" onclick="cargarPacientes('nombre', 'asc')" style="background-color: #34495e; padding: 5px 10px; font-size: 12px;">Nombre (A-Z)</button>
+        <button type="button" onclick="cargarPacientes('nombre', 'desc')" style="background-color: #34495e; padding: 5px 10px; font-size: 12px;">Nombre (Z-A)</button>
+        <button type="button" onclick="cargarPacientes('_id', 'desc')" style="background-color: #34495e; padding: 5px 10px; font-size: 12px;">Más Recientes</button>
+        <button type="button" onclick="cargarPacientes('_id', 'asc')" style="background-color: #34495e; padding: 5px 10px; font-size: 12px;">Más Antiguos</button>
+    </div>
+    <table border="1" style="margin-top:20px;">
+        <thead><tr><th>Nombre</th><th>Edad</th><th>Teléfono</th><th>Correo</th><th>Acciones</th></tr></thead>
+        <tbody id="tablaPacientes"></tbody>
+    </table>
+    <script src="app.js"></script>
+</body>
+</html>
