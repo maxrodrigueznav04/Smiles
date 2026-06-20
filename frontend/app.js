@@ -1,4 +1,4 @@
-const API_URL = 'https://TU-URL-DE-RENDER.onrender.com/api';
+const API_URL = 'https://smiles-d742.onrender.com/api';
 
 // --- LÓGICA PACIENTES ---
 if (document.getElementById('formPaciente')) {
