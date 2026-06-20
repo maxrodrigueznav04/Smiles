@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://TU-URL-DE-RENDER.onrender.com/api';
 
 // --- LÓGICA PACIENTES ---
 if (document.getElementById('formPaciente')) {
